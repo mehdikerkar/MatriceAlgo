@@ -4,11 +4,14 @@ import java.util.LinkedList;
 
 public class MatriceCreuse implements MatriceCaree{
 
-	static int n=100;
+	static int n=10;
 	LinkedList<List3> mtc = new LinkedList<List3>();
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MatriceCreuse mt = new MatriceCreuse();
+		MatriceCreuse mt2 = new MatriceCreuse();
 		double d;
 
 				d=mt.setValue(0, 2, (int)(Math.random()*100));
@@ -19,15 +22,43 @@ public class MatriceCreuse implements MatriceCaree{
 				d=mt.setValue(1, 5, (int)(Math.random()*100));
 				d=mt.setValue(5, 0, (int)(Math.random()*100));
 		System.out.println("######");
+		
 		mt.print();
+		System.out.println("######");
+		for (int i=0;i<n;i++) {
+			for (int j=0;j<n;j++) {
+				System.out.print(mt.getValue(i, j)+"   ");
+			}
+			System.out.println();
+		}
+		d=mt2.setValue(0, 0, (int)(Math.random()*100));
+		d=mt2.setValue(0, 2, (int)(Math.random()*100));
+		d=mt2.setValue(3, 4, (int)(Math.random()*100));
+		d=mt2.setValue(7, 9, (int)(Math.random()*100));
+		d=mt2.setValue(2, 6, (int)(Math.random()*100));
+		d=mt2.setValue(9, 1, (int)(Math.random()*100));
+		d=mt2.setValue(1, 5, (int)(Math.random()*100));
+		d=mt2.setValue(5, 0, (int)(Math.random()*100));
+		System.out.println("######");
+		
+		
+		mt.add(mt2);
+		mt.print();
+		System.out.println("######");
+		for (int i=0;i<n;i++) {
+			for (int j=0;j<n;j++) {
+				System.out.print(mt.getValue(i, j)+"   ");
+			}
+			System.out.println();
+		}
+		
 		
 	}
 	public void print() {
-		int i=0;
 		System.out.println("{");
-		while(mtc!=null) {
+		for(int i=0;i<mtc.size();i++) {
 			System.out.println("("+mtc.get(i).getI()+", "+mtc.get(i).getJ()+", "+mtc.get(i).getValue()+") ");
-		i++;
+		
 		}
 		System.out.print("}");
 	}
@@ -59,11 +90,19 @@ public class MatriceCreuse implements MatriceCaree{
 	@Override
 	public double setValue(int i, int j, double v) {
 		if (i<n && j<n) {//i>n || j>n
+			if(mtc.size()==0) {          //
+					mtc.addFirst(new List3(i, j, v));return 1;
+				}
 			for(int a = 0;a<mtc.size();a++) {
-				if(mtc.get(a).getI()<i && mtc.get(a).getJ()<j) {
+				/*if(mtc.get(a).getI()<i && mtc.get(a).getJ()<j) {          //
 					mtc.addFirst(new List3(i, j, v));return 1;
 				}
 				if(mtc.get(a).getI()<=i && mtc.get(a).getJ()<j  && mtc.get(a+1).getI()>=i && mtc.get(a+1).getJ()>j) {
+					mtc.add(a, new List3(i, j, v));return 1;
+				}*/
+				if(mtc.get(a).getI()>i) {
+					mtc.add(a, new List3(i, j, v));return 1;
+				}else if (mtc.get(a).getI()==i && mtc.get(a).getJ()>j){
 					mtc.add(a, new List3(i, j, v));return 1;
 				}
 				if(mtc.get(a).getI()==i && mtc.get(a).getJ()==j) {
@@ -77,7 +116,10 @@ public class MatriceCreuse implements MatriceCaree{
 	}
 	@Override
 	public void add(MatriceCaree m) {
-		MatriceCreuse e =(MatriceCreuse) m;
+		if(m instanceof MatriceCreuse) {
+			//code
+		}else {
+			MatriceCreuse e =(MatriceCreuse) m;
 		if (n==m.taill()) {
 			for (int i=0;i<n;i++) {
 				for (int j=0;j<n;j++) {
@@ -90,6 +132,9 @@ public class MatriceCreuse implements MatriceCaree{
 					}
 				}
 			}
+		}
+		
+		
 		}
 		
 	}
